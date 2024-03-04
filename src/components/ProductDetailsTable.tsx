@@ -70,13 +70,13 @@ const ProductDetailsTable: React.FC = () => {
             field: 'updated_at',
             headerName: 'Updated_at',
             type: 'string',
-            width: 80,
+            width: 150,
         },
         {
             field: 'name',
             headerName: 'Name',
             type: 'string',
-            width: 122,
+            width: 150,
         },
         {
             field: 'description',
