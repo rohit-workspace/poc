@@ -59,12 +59,12 @@ const ProductDetailsTable: React.FC = () => {
         {
             field: 'price',
             headerName: 'Price',
-            width: 90,
+            width: 100,
         },
         {
             field: 'category',
             headerName: 'Category',
-            width: 90,
+            width: 100,
         },
         {
             field: 'updated_at',
@@ -76,20 +76,20 @@ const ProductDetailsTable: React.FC = () => {
             field: 'name',
             headerName: 'Name',
             type: 'string',
-            width: 120,
+            width: 122,
         },
         {
             field: 'description',
             headerName: 'Description',
             type: 'string',
-            width: 290,
+            width: 400,
         },
         {
             field: 'id',
             headerName: 'Actions',
             sortable: false,
             filterable: false,
-            width: 170,
+            width: 210,
             headerAlign: 'center',
             renderCell: (params) => (
                 <Box
