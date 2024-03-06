@@ -4,14 +4,8 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { editValues } from '../Types/Products-types';
+import { DialogBoxProps } from '../Types/Products-types';
 
-interface DialogBoxProps {
-    open: boolean;
-    selectedCellValue: editValues;
-    handleClose: () => void;
-    handleDeleteConfirm: (data: editValues) => void;
-}
 const DialogBox: React.FC<DialogBoxProps> = ({
     open,
     selectedCellValue,
@@ -32,7 +26,7 @@ const DialogBox: React.FC<DialogBoxProps> = ({
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText id='alert-dialog-slide-description'>
-                        {`${selectedCellValue.name} ${selectedCellValue.id} will be deleted from your list`}
+                        {`${selectedCellValue.name} will be deleted from your list`}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

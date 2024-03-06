@@ -6,9 +6,15 @@ import { Product } from '../Types/Products-types';
 import { fetchProductById } from '../Redux/Reducers/ProductSlice';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import {
+
+    useNavigate
+} from 'react-router-dom';
 
 
 const ProductDetailsPage: React.FC = () => {
+    const navigate = useNavigate();
+
     const { id } = useParams();
     const dispatch: AppDispatch = useDispatch();
     const product: Product | null = useSelector((state: RootState) => state.productReducer.selectedProduct);
@@ -23,11 +29,12 @@ const ProductDetailsPage: React.FC = () => {
     }
     return (
         <div>
-            <h2 style={{ marginLeft: '434px', marginTop: '45px' }}>Product Details</h2>
+            <button style={{ backgroundColor: 'darkgray', width: '89px', height: '40px', fontFamily: 'Trebuchet MS' }} onClick={() => navigate(-1)}>Go Back</button>
+            <h2 style={{ marginLeft: '434px', marginTop: '45px', fontFamily: 'Trebuchet MS' }}>Product Details</h2>
             <img style={{ width: '320px', height: '300px', marginBottom: '8px' }} src={`${product.photo.url}`} />
-            <p style={{ marginLeft: '436px', marginTop: '-306px' }}><strong>Id:</strong> {product.photo.id}</p>
-            <p style={{ marginLeft: '434px' }}><strong>Title:</strong> {product.photo.title}</p>
-            <p style={{ marginLeft: '431px' }}><strong>Description:</strong> {product.photo.description}</p>
+            <p style={{ marginLeft: '436px', marginTop: '-306px', fontFamily: 'Trebuchet MS' }}><strong>Id:</strong> {product.photo.id}</p>
+            <p style={{ marginLeft: '434px', fontFamily: 'Trebuchet MS' }}><strong>Title:</strong> {product.photo.title}</p>
+            <p style={{ marginLeft: '431px', fontFamily: 'Trebuchet MS' }}><strong>Description:</strong> {product.photo.description}</p>
         </div >
     );
 

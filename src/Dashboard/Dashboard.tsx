@@ -13,7 +13,7 @@ function Dashboard() {
         p={'25px'}
         flexDirection='column'
       >
-        <Typography variant='h6' mb={1} style={{ color: 'gray' }}>
+        <Typography variant='h6' mb={1} fontFamily= "Trebuchet MS" style={{ color: 'black' }}>
           Product-List
         </Typography>
         <ProductDetailsTable />

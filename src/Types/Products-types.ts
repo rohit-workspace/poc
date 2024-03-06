@@ -1,4 +1,5 @@
 export interface ProductData {
+  openEditForm: boolean;
   success: boolean;
   message: string;
   total_products: number;
@@ -7,9 +8,16 @@ export interface ProductData {
   product: string;
   edit: boolean;
   selectedProduct: any;
-  openDeletePopup: any;
+  openDeletePopup: boolean;
   openDeleteDialog: boolean;
   products: Product[];
+}
+export interface OpenFormProps {
+  openForm: boolean;
+  updateField: boolean;
+  selectedCellValue: FormValues;
+  handleCloseForm: () => void;
+  handleSubmitForm: (data: FormValues) => void;
 }
 
 export interface Product {
@@ -25,18 +33,25 @@ export interface Product {
   description: string;
   image: string;
 }
-
-export interface editValues {
-  id: number;
+export interface FetchProductByIdArgs {
+  productId: string;
+}
+export interface FormValues {
+  id: any;
   price: string;
   category: string;
   updated_at: string;
   name: string;
   description: string;
-  selectedCellValue: string;
+}
+export interface DialogBoxProps {
+  open: boolean;
+  selectedCellValue: FormValues;
+  handleClose: () => void;
+  handleDeleteConfirm: (data: FormValues) => void;
 }
 
 export interface OpenModalPayload {
-  component: "edit" | "openDeleteDialog";
+  component: "openDeletePopup" | "openDeleteDialog";
   action: boolean;
 }

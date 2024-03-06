@@ -19,10 +19,15 @@ const initialState: ProductData = {
   openDeletePopup: false,
   openDeleteDialog: false,
   selectedProduct: undefined,
+  openEditForm: false
 };
 
 interface FetchProductByIdArgs {
   productId: string;
+}
+interface FetchProductDataArgs {
+  page: number;
+  pageSize: number;
 }
 
 export const fetchProductData = createAsyncThunk(
@@ -40,7 +45,7 @@ export const fetchProductData = createAsyncThunk(
 );
 
 export const fetchProductById = createAsyncThunk(
-  "product/fetchProductById",
+  "detail/fetchDetailPageData",
   async ({ productId }: FetchProductByIdArgs) => {
     const response = await fetch(
       `https://api.slingacademy.com/v1/sample-data/photos/${productId}`
@@ -125,11 +130,6 @@ const ProductSlice = createSlice({
       });
   },
 });
-
-interface FetchProductDataArgs {
-  page: number;
-  pageSize: number;
-}
 
 export const { openCloseModal, setCurrentProduct } = ProductSlice.actions;
 export const selectSelectedProduct = (state: RootState) =>

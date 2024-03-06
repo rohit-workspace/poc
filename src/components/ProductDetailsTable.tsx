@@ -7,26 +7,24 @@ import {
     fetchProductData,
     openCloseModal,
 } from '../Redux/Reducers/ProductSlice';
-import { Button, Modal, Box, Typography } from '@mui/material';
-import { editValues } from '../Types/Products-types';
+import { Button, Box } from '@mui/material';
+import { FormValues } from '../Types/Products-types';
 import DialogBox from './DialogBox';
-import { Link, useNavigate } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom';
+import EditProduct from './EditProduct';
 
 
 const ProductDetailsTable: React.FC = () => {
-    const [open, setOpen] = useState<boolean>(false);
-
+    const [updateField, setUpdateField] = useState<boolean>(false);
     const navigate = useNavigate();
 
-    const initialStateFormValue: editValues = {
-        id: 0,
+    const initialFormValue: FormValues = {
         price: '',
         category: '',
         updated_at: '',
         name: '',
         description: '',
-        selectedCellValue: ''
+        id: '',
     };
     const dispatch: AppDispatch = useDispatch();
     const productReducerState = useSelector((state: RootState) => state.productReducer);
@@ -34,16 +32,9 @@ const ProductDetailsTable: React.FC = () => {
     const [page, setPage] = useState<number>(0);
     const [pageSize, setPageSize] = useState<number>(10);
 
-    const [selectedCellValue, setSelectedCellValue] = useState<editValues>(
-        initialStateFormValue,
+    const [selectedCellValue, setSelectedCellValue] = useState<FormValues>(
+        initialFormValue,
     );
-
-    const handleOpen = () => {
-        setOpen(true);
-    };
-    const handleClose = () => {
-        setOpen(false);
-    };
 
     useEffect(() => {
         dispatch(
@@ -74,7 +65,7 @@ const ProductDetailsTable: React.FC = () => {
         },
         {
             field: 'name',
-            headerName: 'Name',
+            headerName: 'Product Name',
             type: 'string',
             width: 150,
         },
@@ -99,25 +90,27 @@ const ProductDetailsTable: React.FC = () => {
                     height='100%'
                 >
                     <Button
-                        aria-label='details'
-                        onClick={() => {
-
-                            navigate(`/product-detail/${params.id}`);
+                        aria-label='edit'
+                        onClick={(e) => {
+                            setSelectedCellValue(params.row.id);
+                            setUpdateField(true);
+                            e.stopPropagation();
+                            dispatch(
+                                openCloseModal({
+                                    component: 'openDeletePopup',
+                                    action: true,
+                                }),
+                            );
                         }}
                     >
-                        Details
+                        Edit
                     </Button>
 
-
-                    <Button onClick={handleOpen}
-                    >edit</Button>
-
                     <Button
-                        aria-label='delete'
                         color='error'
-                        onClick={() => {
+                        onClick={(e) => {
                             setSelectedCellValue(params.row);
-
+                            e.stopPropagation();
                             dispatch(
                                 openCloseModal({
                                     component: 'openDeleteDialog',
@@ -129,31 +122,6 @@ const ProductDetailsTable: React.FC = () => {
                         Delete
                     </Button>
 
-                    <Modal
-                        open={open}
-                        onClose={handleClose}
-                        aria-labelledby="modal-title"
-                        aria-describedby="modal-description"
-                    >
-                        <Box sx={{
-                            position: 'absolute',
-                            top: '50%',
-                            left: '50%',
-                            transform: 'translate(-50%, -50%)',
-                            width: 400,
-                            bgcolor: 'background.paper',
-                            boxShadow: 24,
-                            p: 4,
-                        }}>
-                            <Typography id="modal-title" variant="h6" component="h2">
-                                Edit Products
-                            </Typography>
-                            <Typography id="modal-description" sx={{ mt: 2 }}>
-                                This is the content of the modal. You can put any content here..
-                            </Typography>
-                            <Button onClick={handleClose} sx={{ mt: 15 }}>Close</Button>
-                        </Box>
-                    </Modal>
 
                 </Box>
 
@@ -164,10 +132,21 @@ const ProductDetailsTable: React.FC = () => {
     return (
 
         <Box sx={{ height: 371, width: { lg: '1160px', xl: '1200px' } }}>
+            <EditProduct
+                updateField={updateField}
+                openForm={productReducerState.openDeletePopup}
+                selectedCellValue={selectedCellValue}
+                handleCloseForm={() =>
+                    dispatch(openCloseModal({ component: 'openDeletePopup', action: false }))
+                }
+                handleSubmitForm={(data) => {
+                    console.log('Data Edited Successfully ', data);
+                }}
+            />
             <DataGrid
                 sx={{
                     boxShadow: 2,
-                    border: 2,
+                    border: 1,
                     borderColor: 'primary.light',
                     '& .MuiDataGrid-cell:hover': {
                         color: 'primary.main',
@@ -182,6 +161,9 @@ const ProductDetailsTable: React.FC = () => {
                 disableRowSelectionOnClick={true}
                 rows={productReducerState.products}
                 columns={columns}
+                onRowClick={(params) => {
+                    navigate(`/product-detail/${params.id}`);
+                }}
                 pagination
                 initialState={{
                     pagination: {
@@ -200,10 +182,9 @@ const ProductDetailsTable: React.FC = () => {
                 handleClose={() => dispatch(
                     openCloseModal({ component: 'openDeleteDialog', action: false })
                 )}
-                handleDeleteConfirm={function (data: editValues): void {
+                handleDeleteConfirm={function (data: FormValues): void {
                     console.log('product successfully deleted.');
                 }}
-
             />
         </Box>
     );
