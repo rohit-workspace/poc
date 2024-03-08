@@ -4,6 +4,7 @@ import { Box, DialogActions, IconButton, Button, TextField, Dialog, DialogConten
 import { Close } from '@mui/icons-material';
 import { FormValues, OpenFormProps } from '../Types/Products-types';
 
+
 const EditProduct: React.FC<OpenFormProps> = ({
   openForm,
   selectedCellValue,
@@ -19,6 +20,9 @@ const EditProduct: React.FC<OpenFormProps> = ({
   } = useForm<FormValues>({
     defaultValues: selectedCellValue,
   });
+  useForm({ values: selectedCellValue });
+
+
 
   const handleClose = () => {
     reset();
@@ -38,21 +42,33 @@ const EditProduct: React.FC<OpenFormProps> = ({
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle>
-          <IconButton
-            aria-label="close"
-            onClick={handleClose}
-            sx={{
-              position: 'absolute',
-              right: 8,
-              top: 8,
-            }}
-          >
-            <Close />
-          </IconButton>
-        </DialogTitle>
+
+        <IconButton
+          aria-label="close"
+          onClick={handleClose}
+          sx={{
+            position: 'absolute',
+            right: 8,
+            top: 8,
+          }}
+        >
+          <Close />
+        </IconButton>
+
         <DialogContent>
           <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
+            <label><strong>Name:</strong></label>
+            <TextField
+              InputLabelProps={{ shrink: watch('name') !== '' }}
+              margin="dense"
+              id="name"
+              label="name"
+              fullWidth
+              required
+              {...register('name', { required: 'name is required.' })}
+              error={!!errors.updated_at}
+              helperText={errors.name ? errors.name.message : ''}
+            />
             <label>
               <strong>Price</strong>
             </label>
@@ -64,7 +80,7 @@ const EditProduct: React.FC<OpenFormProps> = ({
               fullWidth
               required
               {...register('price', {
-                required: 'Price is required.',
+                required: 'price is required.',
                 pattern: {
                   value: /^[0-9]+(\.[0-9]{1,2})?$/,
                   message: 'Invalid price format.',
@@ -73,6 +89,7 @@ const EditProduct: React.FC<OpenFormProps> = ({
               error={!!errors.price}
               helperText={errors.price ? errors.price.message : ''}
             />
+
             <label>
               <strong>Category</strong>
             </label>
@@ -83,7 +100,7 @@ const EditProduct: React.FC<OpenFormProps> = ({
               label="Category"
               fullWidth
               required
-              {...register('category', { required: 'Category is required.' })}
+              {...register('category', { required: 'category is required.' })}
               error={!!errors.category}
               helperText={errors.category ? errors.category.message : ''}
             />
@@ -97,9 +114,21 @@ const EditProduct: React.FC<OpenFormProps> = ({
               label="Updated_at"
               fullWidth
               required
-              {...register('updated_at', { required: 'Updated at is required.' })}
+              {...register('updated_at', { required: 'updated at is required.' })}
               error={!!errors.updated_at}
               helperText={errors.updated_at ? errors.updated_at.message : ''}
+            />
+            <label><strong>Description:</strong></label>
+            <TextField
+              InputLabelProps={{ shrink: watch('description') !== '' }}
+              margin="dense"
+              id="description"
+              label="description"
+              fullWidth
+              required
+              {...register('description', { required: 'description at is required.' })}
+              error={!!errors.updated_at}
+              helperText={errors.description ? errors.description.message : ''}
             />
             <DialogActions>
               <Button type="submit" variant="contained">
@@ -114,3 +143,7 @@ const EditProduct: React.FC<OpenFormProps> = ({
 };
 
 export default EditProduct;
+
+
+
+
