@@ -1,9 +1,17 @@
 
+import React from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { Box, DialogActions, IconButton, Button, TextField, Dialog, DialogContent, DialogTitle } from '@mui/material';
+import {
+  Box,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  IconButton,
+  Button,
+  TextField,
+} from '@mui/material';
 import { Close } from '@mui/icons-material';
 import { FormValues, OpenFormProps } from '../Types/Products-types';
-
 
 const EditProduct: React.FC<OpenFormProps> = ({
   openForm,
@@ -20,9 +28,6 @@ const EditProduct: React.FC<OpenFormProps> = ({
   } = useForm<FormValues>({
     defaultValues: selectedCellValue,
   });
-  useForm({ values: selectedCellValue });
-
-
 
   const handleClose = () => {
     reset();
@@ -31,46 +36,40 @@ const EditProduct: React.FC<OpenFormProps> = ({
 
   const onSubmit: SubmitHandler<FormValues> = (data: FormValues) => {
     handleSubmitForm(data);
-
   };
 
   return (
     <>
-      <Dialog
-        open={openForm}
-        keepMounted
-        onClose={handleClose}
-        aria-describedby="alert-dialog-slide-description"
-      >
-
+      <Dialog open={openForm} keepMounted onClose={handleClose} aria-describedby="alert-dialog-slide-description">
         <IconButton
           aria-label="close"
           onClick={handleClose}
           sx={{
             position: 'absolute',
-            right: 8,
-            top: 8,
+            right: 5,
+            top: 5,
           }}
         >
           <Close />
         </IconButton>
-
         <DialogContent>
           <Box component="form" noValidate onSubmit={handleSubmit(onSubmit)}>
-            <label><strong>Name:</strong></label>
+            <label>
+              <strong>Name:</strong>
+            </label>
             <TextField
               InputLabelProps={{ shrink: watch('name') !== '' }}
               margin="dense"
               id="name"
-              label="name"
+              label="Name"
               fullWidth
               required
-              {...register('name', { required: 'name is required.' })}
-              error={!!errors.updated_at}
+              {...register('name', { required: 'Name is required.' })}
+              error={!!errors.name}
               helperText={errors.name ? errors.name.message : ''}
             />
             <label>
-              <strong>Price</strong>
+              <strong>Price:</strong>
             </label>
             <TextField
               InputLabelProps={{ shrink: watch('price') !== '' }}
@@ -79,19 +78,20 @@ const EditProduct: React.FC<OpenFormProps> = ({
               label="Price"
               fullWidth
               required
+              type="number"
               {...register('price', {
-                required: 'price is required.',
+                required: 'Price is required.',
                 pattern: {
                   value: /^[0-9]+(\.[0-9]{1,2})?$/,
                   message: 'Invalid price format.',
                 },
+                validate: (value: string) => parseFloat(value) > 0 || 'Price must be greater than zero.',
               })}
               error={!!errors.price}
               helperText={errors.price ? errors.price.message : ''}
             />
-
             <label>
-              <strong>Category</strong>
+              <strong>Category:</strong>
             </label>
             <TextField
               InputLabelProps={{ shrink: watch('category') !== '' }}
@@ -100,7 +100,7 @@ const EditProduct: React.FC<OpenFormProps> = ({
               label="Category"
               fullWidth
               required
-              {...register('category', { required: 'category is required.' })}
+              {...register('category', { required: 'Category is required.' })}
               error={!!errors.category}
               helperText={errors.category ? errors.category.message : ''}
             />
@@ -111,23 +111,25 @@ const EditProduct: React.FC<OpenFormProps> = ({
               InputLabelProps={{ shrink: watch('updated_at') !== '' }}
               margin="dense"
               id="updated_at"
-              label="Updated_at"
               fullWidth
               required
-              {...register('updated_at', { required: 'updated at is required.' })}
+              type="datetime-local"
+              {...register('updated_at', { required: 'Updated at is required.' })}
               error={!!errors.updated_at}
               helperText={errors.updated_at ? errors.updated_at.message : ''}
             />
-            <label><strong>Description:</strong></label>
+            <label>
+              <strong>Description:</strong>
+            </label>
             <TextField
               InputLabelProps={{ shrink: watch('description') !== '' }}
               margin="dense"
               id="description"
-              label="description"
+              label="Description"
               fullWidth
               required
-              {...register('description', { required: 'description at is required.' })}
-              error={!!errors.updated_at}
+              {...register('description', { required: 'Description is required.' })}
+              error={!!errors.description}
               helperText={errors.description ? errors.description.message : ''}
             />
             <DialogActions>
@@ -143,7 +145,3 @@ const EditProduct: React.FC<OpenFormProps> = ({
 };
 
 export default EditProduct;
-
-
-
-
