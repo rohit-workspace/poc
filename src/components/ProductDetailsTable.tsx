@@ -110,6 +110,7 @@ const ProductDetailsTable: React.FC = () => {
                         color='error'
                         onClick={(e) => {
                             setSelectedCellValue(params.row);
+                            console.log('Data deleted',params.row);
                             e.stopPropagation();
                             dispatch(
                                 openCloseModal({
